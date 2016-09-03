@@ -4,23 +4,23 @@
 
 #define MIN(a,b) (((a)<(b))?(a):(b))
 #define MAX(a,b) (((a)>(b))?(a):(b))
-#define md5_uint32 unsigned int
+#define unsigned int unsigned int
 
 static __device__ const char md5_salt_prefix[] = "$1$";
 static __device__ const char b64t[] = "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 static __device__ const unsigned char fillbuf[64] = { 0x80, 0 };
 
 struct md5_ctx{
-  md5_uint32 A;
-  md5_uint32 B;
-  md5_uint32 C;
-  md5_uint32 D;
+  unsigned int A;
+  unsigned int B;
+  unsigned int C;
+  unsigned int D;
 
-  md5_uint32 total[2];
-  md5_uint32 buflen;
+  unsigned int total[2];
+  unsigned int buflen;
   union{
     char buffer[128];
-    md5_uint32 buffer32[32];
+    unsigned int buffer32[32];
   };
 };
 
@@ -30,25 +30,25 @@ struct md5_ctx{
 #define FI(b, c, d) (c ^ (b | ~d))
 
 __device__ __forceinline__ void md5_process_block (const void *buffer, size_t len, struct md5_ctx *ctx){
-  md5_uint32 correct_words[16];
-  const md5_uint32 *words = (const md5_uint32 *)buffer;
-  size_t nwords = len / sizeof (md5_uint32);
-  const md5_uint32 *endp = words + nwords;
-  md5_uint32 A = ctx->A;
-  md5_uint32 B = ctx->B;
-  md5_uint32 C = ctx->C;
-  md5_uint32 D = ctx->D;
-  md5_uint32 lolen = len;
+  unsigned int correct_words[16];
+  const unsigned int *words = (const unsigned int *)buffer;
+  size_t nwords = len / sizeof (unsigned int);
+  const unsigned int *endp = words + nwords;
+  unsigned int A = ctx->A;
+  unsigned int B = ctx->B;
+  unsigned int C = ctx->C;
+  unsigned int D = ctx->D;
+  unsigned int lolen = len;
 
   ctx->total[0] += lolen;
   ctx->total[1] += (len >> 32) + (ctx->total[0] < lolen);
 
   while (words < endp){
-    md5_uint32 *cwp = correct_words;
-    md5_uint32 A_save = A;
-    md5_uint32 B_save = B;
-    md5_uint32 C_save = C;
-    md5_uint32 D_save = D;
+    unsigned int *cwp = correct_words;
+    unsigned int A_save = A;
+    unsigned int B_save = B;
+    unsigned int C_save = C;
+    unsigned int D_save = D;
 
 #define OP(a, b, c, d, s, T)                            \
     a += FF (b, c, d) + (*cwp++ = (*words)) + T;        \
@@ -149,10 +149,10 @@ __device__ __forceinline__ void md5_process_block (const void *buffer, size_t le
 }
 
 __device__ __forceinline__ void * md5_read_ctx (const struct md5_ctx *ctx, void *resbuf){
-  ((md5_uint32 *) resbuf)[0] = ctx->A;
-  ((md5_uint32 *) resbuf)[1] = ctx->B;
-  ((md5_uint32 *) resbuf)[2] = ctx->C;
-  ((md5_uint32 *) resbuf)[3] = ctx->D;
+  ((unsigned int *) resbuf)[0] = ctx->A;
+  ((unsigned int *) resbuf)[1] = ctx->B;
+  ((unsigned int *) resbuf)[2] = ctx->C;
+  ((unsigned int *) resbuf)[3] = ctx->D;
 
   return resbuf;
 }
@@ -186,7 +186,7 @@ __device__ __forceinline__ void md5_process_bytes (const void *buffer, size_t le
 }
 
 __device__ __forceinline__ void * md5_finish_ctx (struct md5_ctx *ctx, void *resbuf){
-  md5_uint32 bytes = ctx->buflen;
+  unsigned int bytes = ctx->buflen;
   size_t pad;
 
   ctx->total[0] += bytes;
