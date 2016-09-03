@@ -310,7 +310,7 @@ int main(){
   cudaMemcpy(salt,"$1$8UbX8cck$",13 * sizeof(char), cudaMemcpyHostToDevice);
   cudaMalloc((void**)&buffer,64 * sizeof(char));
   get_it<<<1,1>>>(key,salt,buffer);
-  char ans[100];
+  char ans[64];
   cudaMemcpy(ans,buffer,64 * sizeof(char),cudaMemcpyDeviceToHost);
   printf("%s\n",ans);
   return 0;
