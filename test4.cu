@@ -204,13 +204,6 @@ __device__ void * md5_finish_ctx (struct md5_ctx *ctx, void *resbuf){
   return md5_read_ctx (ctx, resbuf);
 }
 
-#define len_str(S,l)        \
-{                           \
-  char *s=(S);              \
-  (l)=0;                    \
-  while(*s!=0){s++;(l)++;}  \
-}
-
 __global__ void get_it(char* key, char* salt, char* buffer){
 
   unsigned char alt_result[16];
@@ -222,7 +215,9 @@ __global__ void get_it(char* key, char* salt, char* buffer){
   salt += sizeof (md5_salt_prefix) - 1;
 
   salt_len = 8;
-  len_str (key, key_len);
+  cp = key;
+  key_len = 0;
+  while(*cp!=0){cp++;key_len++;}
 
   struct md5_ctx ctx;
   struct md5_ctx alt_ctx;
