@@ -273,22 +273,18 @@ __global__ void get_it(char* key, char* salt, char* buffer, int buflen){
 
   memcpy (buffer, md5_salt_prefix,sizeof(md5_salt_prefix));
   cp = buffer + sizeof (md5_salt_prefix) - 1;
-  //buflen -= sizeof (md5_salt_prefix) - 1;
 
   memcpy (cp, salt, salt_len);
   cp += salt_len;
-  //buflen -= salt_len;
 
   *cp++ = '$';
-  //--buflen;
 
 #define b64_from_24bit(b2,b1,b0,N)                  \
   {                                                 \
     int n=N;                                        \
     unsigned int w = (b2 << 16) | (b1 << 8) | b0;   \
-    while (n-- > 0 /*&& buflen > 0*/){                  \
+    while (n-- > 0){                                \
       *cp++ = b64t[w & 0x3f];                       \
-      /*--buflen;*/                                     \
       w >>= 6;                                      \
     }                                               \
   }
@@ -312,8 +308,7 @@ int main(){
   cudaMalloc((void**)&key, 32 * sizeof(char));
   cudaMemcpy(key,"fred",5 * sizeof(char), cudaMemcpyHostToDevice);
   cudaMemcpy(salt,"$1$8UbX8cck$",13 * sizeof(char), cudaMemcpyHostToDevice);
-  int buflen = 43;
-  cudaMalloc((void**)&buffer,buflen * sizeof(char));
+  cudaMalloc((void**)&buffer,32 * sizeof(char));
   get_it<<<1,1>>>(key,salt,buffer,buflen);
   char ans[100];
   cudaMemcpy(ans,buffer,buflen * sizeof(char),cudaMemcpyDeviceToHost);
