@@ -300,7 +300,6 @@ __global__ void get_it(char* key, char* salt, char* buffer){
 }
 
 int main(){
-  
   char* key;
   char* salt;
   char* buffer;
