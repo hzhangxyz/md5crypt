@@ -242,7 +242,7 @@ __global__ void get_it(char* key, char* salt, char* buffer, int buflen){
     md5_process_bytes (alt_result, 16, &ctx);
   md5_process_bytes (alt_result, cnt, &ctx);
 
-  *alt_result = '\0';
+  *alt_result = 0;
 
   for (cnt = key_len; cnt > 0; cnt >>= 1)
     md5_process_bytes ((cnt & 1) != 0 ? (const void *) alt_result : (const void *) key, 1, &ctx);
@@ -271,19 +271,11 @@ __global__ void get_it(char* key, char* salt, char* buffer, int buflen){
     md5_finish_ctx (&ctx, alt_result);
   }
 
-#define cpy_str(d,s)               \
-  {                                \
-    char* t=(d);                   \
-    const char* r=(s);             \
-    while(*r!=0)                   \
-      *(t++)=*(r++);               \
-    *t=0;                          \
-  }
-  cpy_str (buffer, md5_salt_prefix);
+  memcpy (buffer, md5_salt_prefix,sizeof(md5_salt_prefix));
   cp = buffer + sizeof (md5_salt_prefix) - 1;
   buflen -= sizeof (md5_salt_prefix) - 1;
 
-  cpy_str (cp, salt);
+  memcpy (cp, salt, salt_len);
   cp += salt_len;
   buflen -= salt_len;
 
