@@ -242,7 +242,7 @@ __global__ void get_it(char* key, char* salt, char* buffer, int buflen){
     md5_process_bytes (alt_result, 16, &ctx);
   md5_process_bytes (alt_result, cnt, &ctx);
 
-  *alt_result = '\0';
+  *alt_result = 0;
 
   for (cnt = key_len; cnt > 0; cnt >>= 1)
     md5_process_bytes ((cnt & 1) != 0 ? (const void *) alt_result : (const void *) key, 1, &ctx);
