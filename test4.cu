@@ -303,8 +303,8 @@ __global__ void get_it(char* key, char* salt, char* buffer, int buflen){
   *cp = '\0';
 }
 
-
 int main(){
+  
   char* key;
   char* salt;
   char* buffer;
