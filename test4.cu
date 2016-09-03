@@ -211,7 +211,7 @@ __device__ void * md5_finish_ctx (struct md5_ctx *ctx, void *resbuf){
   while(*s!=0){s++;(l)++;}  \
 }
 
-__global__ void get_it(char* key, char* salt, char* buffer, int buflen){
+__global__ void get_it(char* key, char* salt, char* buffer){
 
   unsigned char alt_result[16];
   size_t salt_len;
@@ -308,10 +308,10 @@ int main(){
   cudaMalloc((void**)&key, 32 * sizeof(char));
   cudaMemcpy(key,"fred",5 * sizeof(char), cudaMemcpyHostToDevice);
   cudaMemcpy(salt,"$1$8UbX8cck$",13 * sizeof(char), cudaMemcpyHostToDevice);
-  cudaMalloc((void**)&buffer,32 * sizeof(char));
-  get_it<<<1,1>>>(key,salt,buffer,buflen);
+  cudaMalloc((void**)&buffer,64 * sizeof(char));
+  get_it<<<1,1>>>(key,salt,buffer);
   char ans[100];
-  cudaMemcpy(ans,buffer,buflen * sizeof(char),cudaMemcpyDeviceToHost);
+  cudaMemcpy(ans,buffer,64 * sizeof(char),cudaMemcpyDeviceToHost);
   printf("%s\n",ans);
   return 0;
 }
