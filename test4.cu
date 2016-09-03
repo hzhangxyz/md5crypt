@@ -296,7 +296,7 @@ __global__ void get_it(char* key, char* salt, char* buffer){
   b64_from_24bit (alt_result[4], alt_result[10], alt_result[5], 4);
   b64_from_24bit (0, 0, alt_result[11], 2);
 
-  *cp = '\0';
+  *cp = 0;
 }
 
 int main(){
