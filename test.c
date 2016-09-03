@@ -285,9 +285,9 @@ static const char b64t[64] =
 int main(){
   char* key;
   char* salt;
-  salt = (void*)malloc(5*sizeof(char));
+  salt = (void*)malloc(19*sizeof(char));
   key = (void*)malloc(13*sizeof(char));
-  memcpy(key,"fred",5);
+  memcpy(key,"asdfghjkloiuytrewq",19);
   memcpy(salt,"$1$8UbX8cck$",13);
 
   int buflen = 31 + strlen (salt);
