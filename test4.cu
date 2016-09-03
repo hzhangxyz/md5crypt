@@ -4,7 +4,6 @@
 
 #define MIN(a,b) (((a)<(b))?(a):(b))
 #define MAX(a,b) (((a)>(b))?(a):(b))
-#define unsigned int unsigned int
 
 static __device__ const char md5_salt_prefix[] = "$1$";
 static __device__ const char b64t[] = "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
