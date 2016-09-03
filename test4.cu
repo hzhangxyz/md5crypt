@@ -5,9 +5,9 @@
 #define MIN(a,b) (((a)<(b))?(a):(b))
 #define MAX(a,b) (((a)>(b))?(a):(b))
 
-static __device__ const char md5_salt_prefix[] = "$1$";
-static __device__ const char b64t[] = "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-static __device__ const unsigned char fillbuf[64] = { 0x80, 0 };
+static __constant__ const char md5_salt_prefix[] = "$1$";
+static __constant__ const char b64t[] = "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+static __constant__ const unsigned char fillbuf[64] = { 0x80, 0 };
 
 struct md5_ctx{
   unsigned int A;
