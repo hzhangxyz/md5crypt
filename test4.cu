@@ -8,6 +8,7 @@
 
 static __device__ const char md5_salt_prefix[] = "$1$";
 static __device__ const char b64t[] = "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+static __device__ const unsigned char fillbuf[64] = { 0x80, 0 };
 
 struct md5_ctx{
   md5_uint32 A;
@@ -147,9 +148,7 @@ __device__ void md5_process_block (const void *buffer, size_t len, struct md5_ct
   ctx->D = D;
 }
 
-static __device__ const unsigned char fillbuf[64] = { 0x80, 0 };
-
-__device__ void * md5_read_ctx (const struct md5_ctx *ctx, void *resbuf){
+__device__ __forceinline__ void * md5_read_ctx (const struct md5_ctx *ctx, void *resbuf){
   ((md5_uint32 *) resbuf)[0] = ctx->A;
   ((md5_uint32 *) resbuf)[1] = ctx->B;
   ((md5_uint32 *) resbuf)[2] = ctx->C;
@@ -158,7 +157,7 @@ __device__ void * md5_read_ctx (const struct md5_ctx *ctx, void *resbuf){
   return resbuf;
 }
 
-__device__ void md5_init_ctx (struct md5_ctx *ctx){
+__device__ __forceinline__ void md5_init_ctx (struct md5_ctx *ctx){
   ctx->A = 0x67452301;
   ctx->B = 0xefcdab89;
   ctx->C = 0x98badcfe;
@@ -167,7 +166,7 @@ __device__ void md5_init_ctx (struct md5_ctx *ctx){
   ctx->buflen = 0;
 }
 
-__device__ void md5_process_bytes (const void *buffer, size_t len, struct md5_ctx *ctx){
+__device__ __forceinline__ void md5_process_bytes (const void *buffer, size_t len, struct md5_ctx *ctx){
   size_t left_over = ctx->buflen;
   size_t add = MIN(len, 128 - left_over);
 
@@ -186,7 +185,7 @@ __device__ void md5_process_bytes (const void *buffer, size_t len, struct md5_ct
 
 }
 
-__device__ void * md5_finish_ctx (struct md5_ctx *ctx, void *resbuf){
+__device__ __forceinline__ void * md5_finish_ctx (struct md5_ctx *ctx, void *resbuf){
   md5_uint32 bytes = ctx->buflen;
   size_t pad;
 
