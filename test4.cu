@@ -29,7 +29,7 @@ struct md5_ctx{
 #define FH(b, c, d) (b ^ c ^ d)
 #define FI(b, c, d) (c ^ (b | ~d))
 
-__device__ void md5_process_block (const void *buffer, size_t len, struct md5_ctx *ctx){
+__device__ __forceinline__ void md5_process_block (const void *buffer, size_t len, struct md5_ctx *ctx){
   md5_uint32 correct_words[16];
   const md5_uint32 *words = (const md5_uint32 *)buffer;
   size_t nwords = len / sizeof (md5_uint32);
