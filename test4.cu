@@ -1,6 +1,4 @@
 #include <stdio.h>//printf
-#include <stdlib.h>//malloc
-#include <string.h>//memcpy strcpy strlen strcspn
 
 #define MIN(a,b) (((a)<(b))?(a):(b))
 #define MAX(a,b) (((a)>(b))?(a):(b))
