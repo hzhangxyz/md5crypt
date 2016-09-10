@@ -295,7 +295,7 @@ __global__ void gate_hash(char* dict, char* hash, char** buffer){
   int x = threadIdx.x;
   int y = blockIdx.x;
   char temp[64];
-  char salt[64];
+  __shared__ char salt[64];
   char *dp = dict;
   char *hp = hash;
   char *s1;
