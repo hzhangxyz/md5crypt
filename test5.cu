@@ -299,6 +299,7 @@ __global__ void gate_hash(char* dict, char* hash, char** buffer){
   char *hp = hash;
   for(int i = 0;i<x;i+=(*(++dp)=='\n'));
   for(int i = 0;i<y;i+=(*(++hp)=='\n'));
+
 }
 
 int main(){
@@ -315,6 +316,8 @@ int main(){
   fseek(fp,0L,SEEK_SET);
   fread(hash_src,hash_src_len,1,fp);
   fclose(fp);
+  for(int i = 0; i<hash_src_len; i++)
+    if(*(hash_src+i)=='\n')*(hash_src+i)=0;
 
   fp=fopen("dict.test","r");
   fseek(fp,0L,SEEK_END);
@@ -323,6 +326,8 @@ int main(){
   fseek(fp,0L,SEEK_SET);
   fread(dict_src,dict_src_len,1,fp);
   fclose(fp);
+  for(int i = 0; i<dict_src_len; i++)
+      if(*(dict_src+i)=='\n')*(hash_src+i)=0;
 
   char* dict;
   char* hash;
