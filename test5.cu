@@ -295,11 +295,24 @@ __global__ void gate_hash(char* dict, char* hash, char** buffer){
   int x = threadIdx.x;
   int y = blockIdx.x;
   char temp[32];
+  char salt[32];
   char *dp = dict;
   char *hp = hash;
-  for(int i = 0;i<x;i+=(*(++dp)=='\n'));
-  for(int i = 0;i<y;i+=(*(++hp)=='\n'));
-
+  for(int i = 0;i<x;i+=(*(++dp)=='\n'));dp++;
+  for(int i = 0;i<y;i+=(*(++hp)=='\n'));hp++;
+  char *s1 = hp;
+  char *s2 = salt;
+  while(*s1!='$')
+    *(s2++) = *(s1++);
+  get_it(dp,salt,temp);
+  int flag = 1;
+  s1++;
+  s2=temp;
+  while(*s2!=0)
+    if(*s1!=*s2){
+      flag=0;
+      break;
+    }
 }
 
 int main(){
