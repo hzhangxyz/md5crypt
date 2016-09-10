@@ -3,7 +3,7 @@
 __device__ __forceinline__ void get_it(char *key, size_t key_len, char *salt, char *buffer);
 __global__ void test(char *key, size_t key_len, char *salt, char *buffer)
 {
-    for (int i = 0; i < 100; ++i)
+    for (int i = 0; i < 1000; ++i)
         get_it(key, key_len, salt, buffer);
 }
 
@@ -12,6 +12,7 @@ int main()
     char *key;
     char *salt;
     char *buffer;
+    cudaSetDevice(3);
     cudaMalloc((void **)&salt, 32 * sizeof(char));
     cudaMalloc((void **)&key, 32 * sizeof(char));
     cudaMemcpy(key, "asdfghjkloiuytrewq", 19 * sizeof(char), cudaMemcpyHostToDevice);
