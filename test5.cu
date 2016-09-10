@@ -291,7 +291,7 @@ __device__ void get_it(char* key, char* salt, char* buffer){
   *cp = 0;
 }
 
-__global__ void gate_hash(char* keys, char* hashes, char* bufferes){
+__global__ void gate_hash(char* dict, char* dict, char* buffer){
 }
 
 int main(){
@@ -325,9 +325,12 @@ int main(){
   cudaMemcpy(dict,dict_src,dict_src_len, cudaMemcpyHostToDevice);
   cudaMemcpy(hash,hash_src,hash_src_len, cudaMemcpyHostToDevice);
   cudaMalloc((void**)&buffer,1024 * sizeof(char*));
-  gate_hash<<<1024,1024>>>(key,salt,buffer);
-  char ans[64];
-  cudaMemcpy(ans,buffer,64 * sizeof(char),cudaMemcpyDeviceToHost);
-  printf("%s\n",ans);
+  gate_hash<<<1024,1024>>>(dict,hash,buffer);
+  cudaMemcpy(ans,buffer,1024 * sizeof(char*),cudaMemcpyDeviceToHost);
+  for(int i = 0;i<1024;i++){
+    if(*(buffer+i)) printf("*");
+    else printf("-");
+  }
+  printf("\n",ans);
   return 0;
 }
