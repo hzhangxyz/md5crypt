@@ -292,6 +292,13 @@ __device__ void get_it(char* key, char* salt, char* buffer){
 }
 
 __global__ void gate_hash(char* dict, char* hash, char** buffer){
+  int x = threadIdx.x;
+  int y = blockIdx.x;
+  char temp[32];
+  char *dp = dict;
+  char *hp = hash;
+  for(int i = 0;i<x;i+=(*(++dp)=='\n'));
+  for(int i = 0;i<y;i+=(*(++dp)=='\n'));
 }
 
 int main(){
