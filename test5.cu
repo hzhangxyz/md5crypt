@@ -201,7 +201,7 @@ __device__ __forceinline__ void * md5_finish_ctx (struct md5_ctx *ctx, void *res
   return md5_read_ctx (ctx, resbuf);
 }
 
-__device__ void get_it(char* key, __global__ char* salt, char* buffer){
+__device__ void get_it(char* key, char* salt, char* buffer){
 
   unsigned char alt_result[16];
   size_t salt_len;
