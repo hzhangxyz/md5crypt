@@ -3,7 +3,7 @@
 __device__ __forceinline__ void get_it(char *key, size_t key_len, char *salt, char *buffer);
 __global__ void test(char *key, size_t key_len, char *salt, char *buffer)
 {
-    for (int i = 0; i < 1000; ++i)
+    for (int i = 0; i < 100; ++i)
         get_it(key, key_len, salt, buffer);
 }
 
