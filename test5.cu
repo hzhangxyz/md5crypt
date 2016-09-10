@@ -300,13 +300,13 @@ __global__ void gate_hash(char* dict, char* hash, char** buffer){
   char *hp = hash;
   for(int i = 0;i<x;i+=(*(++dp)=='\n'));dp++;
   for(int i = 0;i<y;i+=(*(++hp)=='\n'));hp++;
-  char *s1 = hp;
-  char *s2 = salt;
-  while(*s1!='$')
-    *(s2++) = *(s1++);
+  for(int i = 0;i<12;i++)
+    *(salt+i)=*(hp+i)
+  *(salt+13)=0;
+
   get_it(dp,salt,temp);
   int flag = 1;
-  s1++;
+  s1=dp+13;
   s2=temp;
   while(*s2!=0)
     if(*s1!=*s2){
