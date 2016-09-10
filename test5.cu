@@ -313,6 +313,8 @@ __global__ void gate_hash(char* dict, char* hash, char** buffer){
       flag=0;
       break;
     }
+  if(flag)
+    *(buffer+y) = dp;
 }
 
 int main(){
