@@ -294,8 +294,8 @@ __device__ void get_it(char* key, char* salt, char* buffer){
 __global__ void gate_hash(char* dict, char* hash, char** buffer){
   int x = threadIdx.x;
   int y = blockIdx.x;
-  char temp[64];
-  char salt[64];
+  __global__ char temp[64];
+  __global__ char salt[64];
   char *dp = dict;
   char *hp = hash;
   char *s1;
