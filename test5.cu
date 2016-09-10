@@ -328,6 +328,7 @@ int main(){
   unsigned int hash_src_len;
   char* dict_src;
   unsigned int dict_src_len;
+  char* pure_salt;
 
   fp=fopen("hash.test","r");
   fseek(fp,0L,SEEK_END);
@@ -347,7 +348,13 @@ int main(){
   fread(dict_src,dict_src_len,1,fp);
   fclose(fp);
   for(int i = 0; i<dict_src_len; i++)
-      if(*(dict_src+i)=='\n')*(dict_src+i)=0;
+    if(*(dict_src+i)=='\n')*(dict_src+i)=0;
+
+  pure_salt = (char *) malloc(hash_src_len);
+  for(int i = 0; i<hash_src_len; i++)
+    pure_salt[i]=hash_src[i]
+  int j = 0;
+  for(int i = 0; i<hash_src_len; i++)
 
   char* dict;
   char* hash;
