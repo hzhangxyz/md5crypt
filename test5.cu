@@ -298,10 +298,12 @@ __global__ void gate_hash(char* dict, char* hash, char** buffer){
   char salt[32];
   char *dp = dict;
   char *hp = hash;
+  char *s1;
+  char *s2;
   for(int i = 0;i<x;i+=(*(++dp)=='\n'));dp++;
   for(int i = 0;i<y;i+=(*(++hp)=='\n'));hp++;
   for(int i = 0;i<12;i++)
-    *(salt+i)=*(hp+i)
+    *(salt+i)=*(hp+i);
   *(salt+13)=0;
 
   get_it(dp,salt,temp);
