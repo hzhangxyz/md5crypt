@@ -352,23 +352,29 @@ int main(){
 
   pure_salt = (char *) malloc(hash_src_len);
   for(int i = 0; i<hash_src_len; i++)
-    pure_salt[i]=hash_src[i]
+    pure_salt[i]=hash_src[i];
   int j = 0;
-  for(int i = 0; i<hash_src_len; i++)
+  for(int i = 0; i<hash_src_len; i++){
+    if(pure_salt[i]=='$')j=(j+1)%3;
+    if(!j)pure_salt[i+1]=0;
+  }
 
   char* dict;
   char* hash;
+  char* salt;
   char** buffer;
   char** buffer_src;
   cudaMalloc((void**)&dict,dict_src_len);
   cudaMalloc((void**)&hash,hash_src_len);
+  cudaMalloc((void**)&salt,hash_src_len);
   cudaMemcpy(dict,dict_src,dict_src_len, cudaMemcpyHostToDevice);
   cudaMemcpy(hash,hash_src,hash_src_len, cudaMemcpyHostToDevice);
+  cudaMemcpy(dict,pure_salt,hash_src_len, cudaMemcpyHostToDevice);
   cudaMalloc((void**)&buffer,1 * sizeof(char*));
   buffer_src = (char **)malloc (1 * sizeof(char*));
   for(int i = 0; i<1; i++)*(buffer_src+i)=0;
   cudaMemcpy(buffer,buffer_src,1 * sizeof(char*),cudaMemcpyHostToDevice);
-  gate_hash<<<1,1>>>(dict,hash,buffer);
+  gate_hash<<<1,1>>>(dict,hash,buffer,p_salt);
   cudaMemcpy(buffer_src,buffer,1 * sizeof(char*),cudaMemcpyDeviceToHost);
   for(int i = 0;i<1;i++){
     if(*(buffer_src+i)) printf("*");
