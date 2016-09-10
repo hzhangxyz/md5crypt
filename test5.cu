@@ -291,7 +291,7 @@ __device__ void get_it(char* key, char* salt, char* buffer){
   *cp = 0;
 }
 
-__global__ void gate_hash(char* key, char* hash, char* buffer){
+__global__ void gate_hash(char* keys, char* hashes, char* bufferes){
 }
 
 int main(){
@@ -300,18 +300,27 @@ int main(){
   unsigned int hash_src_len;
   char* dict_src;
   unsigned int dict_src_len;
-  fp=fopen("dict.test","r");
+
+  fp=fopen("hash.test","r");
   fseek(fp,0L,SEEK_END);
-  dict_src_len=ftell(fp)+1;
+  hash_src_len=ftell(fp);
   hash_src = (char *) malloc(hash_src_len);
   fseek(fp,0L,SEEK_SET);
   fread(hash_src,hash_src_len,1,fp);
+  fclose(fp);
+
+  fp=fopen("dict.test","r");
+  fseek(fp,0L,SEEK_END);
+  dict_src_len=ftell(fp);
+  dict_src = (char *) malloc(dict_src_len);
+  fseek(fp,0L,SEEK_SET);
+  fread(dict_src,dict_src_len,1,fp);
+  fclose(fp);
+
   char* key;
-  char* salt;
+  char* hash;
   char* buffer;
   cudaMalloc((void**)&salt, 32 * sizeof(char));
-  cudaMalloc((void**)&key, 32 * sizeof(char));
-  cudaMemcpy(key,"asdfghjkloiuytrewq",19 * sizeof(char), cudaMemcpyHostToDevice);
   cudaMemcpy(salt,"$1$8UbX8cck$",13 * sizeof(char), cudaMemcpyHostToDevice);
   cudaMalloc((void**)&buffer,64 * sizeof(char));
   gate_hash<<<1,1>>>(key,salt,buffer);
