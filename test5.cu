@@ -319,13 +319,13 @@ int main(){
 
   char* dict;
   char* hash;
-  char* buffer;
+  char** buffer;
   cudaMalloc((void**)&dict,dict_src_len);
   cudaMalloc((void**)&hash,hash_src_len);
   cudaMemcpy(dict,dict_src,dict_src_len, cudaMemcpyHostToDevice);
   cudaMemcpy(hash,hash_src,hash_src_len, cudaMemcpyHostToDevice);
-  cudaMalloc((void**)&buffer,64 * sizeof(char));
-  gate_hash<<<1,1>>>(key,salt,buffer);
+  cudaMalloc((void**)&buffer,1024 * sizeof(char*));
+  gate_hash<<<1024,1024>>>(key,salt,buffer);
   char ans[64];
   cudaMemcpy(ans,buffer,64 * sizeof(char),cudaMemcpyDeviceToHost);
   printf("%s\n",ans);
