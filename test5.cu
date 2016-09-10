@@ -301,10 +301,10 @@ __global__ void gate_hash(char* dict, char* hash, char** buffer){
   char *s1;
   char *s2;
   for(int i = 0;i<x;)
-    i+=(*(++dp)=='\n');
+    i+=(*(++dp)==0);
   dp++;
   for(int i = 0;i<y;)
-    i+=(*(++hp)=='\n');
+    i+=(*(++hp)==0);
   hp++;
   for(int i = 0;i<12;i++)
     *(salt+i)=*(hp+i);
