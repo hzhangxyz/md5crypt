@@ -18,7 +18,7 @@ int main()
     cudaMemcpy(key, "asdfghjkloiuytrewq", 19 * sizeof(char), cudaMemcpyHostToDevice);
     cudaMemcpy(salt, "$1$8UbX8cck$", 13 * sizeof(char), cudaMemcpyHostToDevice);
     cudaMalloc((void **)&buffer, 64 * sizeof(char));
-    test<<<2, 1024>>>(key, 18, salt, buffer);
+    test<<<N1, N2>>>(key, 18, salt, buffer);
     char ans[64];
     cudaMemcpy(ans, buffer, 64 * sizeof(char), cudaMemcpyDeviceToHost);
     printf("%s\n", ans);
