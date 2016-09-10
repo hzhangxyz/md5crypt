@@ -308,7 +308,7 @@ __global__ void gate_hash(char* dict, char* hash, char** buffer){
   hp++;
   for(int i = 0;i<12;i++)
     *(salt+i)=*(hp+i);
-  *(salt+13)=0;
+  *(salt+12)=0;
   get_it(dp,salt,temp);
   int flag = 1;
   s1=dp+13;
