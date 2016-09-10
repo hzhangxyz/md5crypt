@@ -305,7 +305,6 @@ __global__ void gate_hash(char* dict, char* hash, char** buffer){
   for(int i = 0;i<12;i++)
     *(salt+i)=*(hp+i);
   *(salt+13)=0;
-
   get_it(dp,salt,temp);
   int flag = 1;
   s1=dp+13;
@@ -354,13 +353,13 @@ int main(){
   cudaMalloc((void**)&hash,hash_src_len);
   cudaMemcpy(dict,dict_src,dict_src_len, cudaMemcpyHostToDevice);
   cudaMemcpy(hash,hash_src,hash_src_len, cudaMemcpyHostToDevice);
-  cudaMalloc((void**)&buffer,1024 * sizeof(char*));
-  buffer_src = (char **)malloc (1024 * sizeof(char*));
-  for(int i = 0; i<1024; i++)*(buffer_src+i)=0;
-  cudaMemcpy(buffer,buffer_src,1024 * sizeof(char*),cudaMemcpyHostToDevice);
-  gate_hash<<<1024,1024>>>(dict,hash,buffer);
-  cudaMemcpy(buffer_src,buffer,1024 * sizeof(char*),cudaMemcpyDeviceToHost);
-  for(int i = 0;i<1024;i++){
+  cudaMalloc((void**)&buffer,1 * sizeof(char*));
+  buffer_src = (char **)malloc (1 * sizeof(char*));
+  for(int i = 0; i<1; i++)*(buffer_src+i)=0;
+  cudaMemcpy(buffer,buffer_src,1 * sizeof(char*),cudaMemcpyHostToDevice);
+  gate_hash<<<1,1>>>(dict,hash,buffer);
+  cudaMemcpy(buffer_src,buffer,1 * sizeof(char*),cudaMemcpyDeviceToHost);
+  for(int i = 0;i<1;i++){
     if(*(buffer_src+i)) printf("*");
     else printf("-");
   }
