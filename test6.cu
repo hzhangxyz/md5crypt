@@ -267,7 +267,7 @@ __device__ __forceinline__ void get_it(char *key, size_t key_len, char *salt, ch
         md5_process_bytes((cnt & 1) != 0 ? (const void *)alt_result : (const void *)key, 1, &ctx);
 
     md5_finish_ctx(&ctx, alt_result);
-
+    #pragma unroll
     for (cnt = 0; cnt < 1000; ++cnt)
     {
         md5_init_ctx(&ctx);
