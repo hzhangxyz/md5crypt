@@ -344,7 +344,7 @@ int main(){
   fread(dict_src,dict_src_len,1,fp);
   fclose(fp);
   for(int i = 0; i<dict_src_len; i++)
-      if(*(dict_src+i)=='\n')*(hash_src+i)=0;
+      if(*(dict_src+i)=='\n')*(dict_src+i)=0;
 
   char* dict;
   char* hash;
