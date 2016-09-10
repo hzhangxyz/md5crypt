@@ -201,7 +201,7 @@ __device__ __forceinline__ void * md5_finish_ctx (struct md5_ctx *ctx, void *res
   return md5_read_ctx (ctx, resbuf);
 }
 
-__device__ void get_it(char* key, char* salt, char* buffer){
+__device__ void get_it(char* key, __global__ char* salt, char* buffer){
 
   unsigned char alt_result[16];
   size_t salt_len;
@@ -294,8 +294,8 @@ __device__ void get_it(char* key, char* salt, char* buffer){
 __global__ void gate_hash(char* dict, char* hash, char** buffer){
   int x = threadIdx.x;
   int y = blockIdx.x;
-  __global__ char temp[64];
-  __global__ char salt[64];
+  char temp[64];
+  char salt[64];
   char *dp = dict;
   char *hp = hash;
   char *s1;
