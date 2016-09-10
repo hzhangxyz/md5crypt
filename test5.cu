@@ -298,7 +298,7 @@ __global__ void gate_hash(char* dict, char* hash, char** buffer){
   char *dp = dict;
   char *hp = hash;
   for(int i = 0;i<x;i+=(*(++dp)=='\n'));
-  for(int i = 0;i<y;i+=(*(++dp)=='\n'));
+  for(int i = 0;i<y;i+=(*(++hp)=='\n'));
 }
 
 int main(){
