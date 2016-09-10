@@ -355,9 +355,10 @@ int main(){
   cudaMemcpy(dict,dict_src,dict_src_len, cudaMemcpyHostToDevice);
   cudaMemcpy(hash,hash_src,hash_src_len, cudaMemcpyHostToDevice);
   cudaMalloc((void**)&buffer,1024 * sizeof(char*));
-  gate_hash<<<1024,1024>>>(dict,hash,buffer);
   buffer_src = (char **)malloc (1024 * sizeof(char*));
   for(int i = 0; i<1024; i++)*(buffer_src+i)=0;
+  cudaMemcpy(buffer,buffer_src,1024 * sizeof(char*),cudaMemcpyHostToDevice);
+  gate_hash<<<1024,1024>>>(dict,hash,buffer);
   cudaMemcpy(buffer_src,buffer,1024 * sizeof(char*),cudaMemcpyDeviceToHost);
   for(int i = 0;i<1024;i++){
     if(*(buffer_src+i)) printf("*");
