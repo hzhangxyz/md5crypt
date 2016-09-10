@@ -290,7 +290,7 @@ __device__ void get_it(char* key, char* salt, char* buffer){
   *cp = 0;
 }
 
-__global__ void gate_hash(char* key, char* salt, char* buffer){
+__global__ void gate_hash(char* key, char* hash, char* buffer){
 }
 
 int main(){
