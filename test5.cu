@@ -295,13 +295,17 @@ __global__ void gate_hash(char* key, char* hash, char* buffer){
 }
 
 int main(){
+  FILE* fp;
   char* hash_src;
-  unsigned int hash_src_max = 64;
-  unsigned int hash_src_len = 0;
+  unsigned int hash_src_len;
   char* dict_src;
-  unsigned int dict_src_max = 64
-  unsigned int dict_src_len = 0;
-  hash_src = (char *) malloc();
+  unsigned int dict_src_len;
+  fp=fopen("dict.test","r");
+  fseek(fp,0L,SEEK_END);
+  dict_src_len=ftell(fp)+1;
+  hash_src = (char *) malloc(hash_src_len);
+  fseek(fp,0L,SEEK_SET);
+  fread(hash_src,hash_src_len,1,fp);
   char* key;
   char* salt;
   char* buffer;
