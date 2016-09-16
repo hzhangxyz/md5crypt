@@ -252,13 +252,7 @@ __global__ void get_it(char* key, char* salt, char* buffer, int key_len, int sal
     md5_finish_ctx (&ctx, alt_result);
   }
 
-  memcpy (buffer, md5_salt_prefix,sizeof(md5_salt_prefix));
-  cp = buffer + sizeof (md5_salt_prefix) - 1;
-
-  memcpy (cp, salt, salt_len);
-  cp += salt_len;
-
-  *cp++ = '$';
+  cp = buffer;
 
 #define b64_from_24bit(b2,b1,b0,N)                  \
   {                                                 \
