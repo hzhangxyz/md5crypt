@@ -310,7 +310,7 @@ int main(){
   char* buffer;
   cudaMalloc((void**)&salt, 32 * sizeof(char));
   cudaMalloc((void**)&key, 32 * sizeof(char));
-  cudaMemcpy(key,"fred",5 * sizeof(char), cudaMemcpyHostToDevice);
+  cudaMemcpy(key,"qwertyui",9 * sizeof(char), cudaMemcpyHostToDevice);
   cudaMemcpy(salt,"$1$8UbX8cck$",13 * sizeof(char), cudaMemcpyHostToDevice);
   int buflen = 43;
   cudaMalloc((void**)&buffer,buflen * sizeof(char));
