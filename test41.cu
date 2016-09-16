@@ -172,12 +172,7 @@ __device__ __forceinline__ void md5_process_bytes (const void *buffer, size_t le
   buffer = (const char *) buffer + add;
   len -= add;
 
-  left_over = ctx->buflen;
-
-//  memcpy (&ctx->buffer[left_over], buffer, len);
-  left_over += len;
-
-  ctx->buflen = left_over;
+  ctx->buflen += len;
 
 }
 
