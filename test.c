@@ -287,7 +287,7 @@ int main(){
   char* salt;
   salt = (void*)malloc(19*sizeof(char));
   key = (void*)malloc(13*sizeof(char));
-  memcpy(key,"asdfghjkloiuytrewq",19);
+  memcpy(key,"qwertyui",9);
   memcpy(salt,"$1$8UbX8cck$",13);
 
   int buflen = 31 + strlen (salt);
