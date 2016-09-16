@@ -208,7 +208,7 @@ __global__ void get_it(char* key, char* salt, char* buffer){
   size_t cnt;
   char *cp;
 
-  salt += sizeof (md5_salt_prefix) - 1;
+//  salt += sizeof (md5_salt_prefix) - 1;
 
   salt_len = 8;
   cp = key;
