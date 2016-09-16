@@ -256,9 +256,8 @@ __global__ void get_it(char* key, char* salt, char* buffer, int key_len, int sal
 
 #define b64_from_24bit(b2,b1,b0,N)                  \
   {                                                 \
-    int n=N;                                        \
     unsigned int w = (b2 << 16) | (b1 << 8) | b0;   \
-    while (n-- > 0){                                \
+    for(int i=0;i<N;i++){                           \
       *cp++ = b64t[w & 0x3f];                       \
       w >>= 6;                                      \
     }                                               \
