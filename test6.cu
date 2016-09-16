@@ -3,16 +3,8 @@
 __device__ __forceinline__ void get_it(char *key, size_t key_len, char *salt, char *buffer);
 __global__ void test(char *key, size_t key_len, char *salt, char *buffer)
 {
-    char _key[64];
-    for(int i=0;i<key_len;i++)_key[i]=key[i];
-    char* __key = _key;
-    char _salt[64];
-    for(int i=0;i<12;i++)_salt[i]=salt[i];
-    char* __salt = _salt;
-    char _buffer[64];
-    char* __buffer = _buffer;
     for (int i = 0; i < 1024; ++i)
-        get_it(__key, key_len, __salt, __buffer);
+        get_it(key, key_len, salt, buffer);
 }
 
 int main()
