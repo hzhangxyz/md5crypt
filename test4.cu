@@ -296,7 +296,7 @@ int main(){
   char* buffer;
   cudaMalloc((void**)&salt, 32 * sizeof(char));
   cudaMalloc((void**)&key, 32 * sizeof(char));
-  cudaMemcpy(key,"asdfghjkloiuytrewq",19 * sizeof(char), cudaMemcpyHostToDevice);
+  cudaMemcpy(key,"qwertyui",9 * sizeof(char), cudaMemcpyHostToDevice);
   cudaMemcpy(salt,"$1$8UbX8cck$",13 * sizeof(char), cudaMemcpyHostToDevice);
   cudaMalloc((void**)&buffer,64 * sizeof(char));
   get_it<<<1,1>>>(key,salt,buffer);
