@@ -282,10 +282,10 @@ int main(){
   cudaMalloc((void**)&key, 32 * sizeof(char));
   cudaMemcpy(key,"qwertyui",9 * sizeof(char), cudaMemcpyHostToDevice);
   cudaMemcpy(salt,"8UbX8cck",9 * sizeof(char), cudaMemcpyHostToDevice);
-  cudaMalloc((void**)&buffer,64 * sizeof(char));
+  cudaMalloc((void**)&buffer,32 * sizeof(char));
   get_it<<<1,1>>>(key,salt,buffer,18,8);
   char ans[64];
-  cudaMemcpy(ans,buffer,64 * sizeof(char),cudaMemcpyDeviceToHost);
+  cudaMemcpy(ans,buffer,32 * sizeof(char),cudaMemcpyDeviceToHost);
   printf("%s\n",ans);
   return 0;
 }
