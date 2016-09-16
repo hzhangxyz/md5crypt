@@ -8,9 +8,9 @@ __global__ void test(char *key, size_t key_len, char *salt, char *buffer)
     char* __key = _key;
     char _salt[64];
     for(int i=0;i<12;i++)_salt[i]=salt[i];
-    char* __salt = salt;
+    char* __salt = _salt;
     char _buffer[64];
-    char __buffer = _buffer
+    char* __buffer = _buffer
     for (int i = 0; i < 1024; ++i)
         get_it(__key, key_len, __salt, __buffer);
 }
