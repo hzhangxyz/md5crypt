@@ -154,6 +154,14 @@ __device__ __forceinline__ void md5_init_ctx (struct md5_ctx *ctx){
   ctx->buflen = 0;
 }
 
+__device__ __forceinline__ void * md5_read_ctx (const struct md5_ctx *ctx, void *resbuf){
+  ((unsigned int *) resbuf)[0] = ctx->A;
+  ((unsigned int *) resbuf)[1] = ctx->B;
+  ((unsigned int *) resbuf)[2] = ctx->C;
+  ((unsigned int *) resbuf)[3] = ctx->D;
+
+  return resbuf;
+}
 
 __device__ __forceinline__ void md5_process_bytes (const void *buffer, size_t len, struct md5_ctx *ctx){
   size_t left_over = ctx->buflen;
@@ -188,6 +196,8 @@ __device__ __forceinline__ void md5_finish_ctx (struct md5_ctx *ctx, void *resbu
   ctx->buffer32[(bytes + pad + 4) / 4] = (ctx->total[1] << 3) | (ctx->total[0] >> 29);
 
   md5_process_block (ctx->buffer, bytes + pad + 8, ctx);
+ 
+  md5_read_ctx (ctx, resbuf);
 }
 
 __global__ void get_it(char* key, char* salt, char* buffer, int key_len, int salt_len){
