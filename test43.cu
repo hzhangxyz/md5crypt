@@ -285,9 +285,9 @@ __global__ void md5crypt_gate(int *salt_len_a,int *key_len_a,char **salt_a,char 
 #endif
 
 int main(){
-  char* key;
-  char* salt;
-  char* hash;
+  __constant__ char* key;
+  __constant__ char* salt;
+  __constant__ char* hash;
 
   CUDA_malloc_and_memcpy(hash,"OKuSn268wgnMGHee3mENR.",23 * sizeof(char));
   CUDA_malloc_and_memcpy(salt,"8UbX8cck",9 * sizeof(char));
