@@ -276,8 +276,7 @@ __global__ void md5crypt_gate(int *salt_len_a,int *key_len_a,char **salt_a,char 
   int f = 1;
   #pragma unroll
   for(int i = 0;i<22;i++)
-    if(buffer[i]!=hash[i])
-        f = 0;
+    f &= (buffer[i]==hash[i]);
   if(f)
     *flag = t;
 }
