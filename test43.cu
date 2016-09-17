@@ -253,7 +253,7 @@ __device__ void md5crypt(char* salt, char* key, char* buffer, size_t salt_len, s
   *cp = 0;
 }
 
-__global__ void md5crypt_gate(int *salt_len_a,int *key_len_a,char **salt_a,char **key_a, char *hash,int* flag){
+__global__ void md5crypt_gate(int *salt_len_a,int *key_len_a,__constant__ char **salt_a,__constant__ char **key_a, __constant__ char *hash,int* flag){
   int t = blockDim.x * blockIdx.x + threadIdx.x;
   char buffer[32];
   char l_key[32];
