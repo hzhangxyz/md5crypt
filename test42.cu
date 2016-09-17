@@ -275,9 +275,11 @@ __global__ void md5crypt_gate(int *salt_len_a,int *key_len_a,char **salt_a,char 
 #define CUDA_malloc_and_memcpy(dst,src,len)                  \
     cudaMalloc((void**)&(dst),(len));                        \
     cudaMemcpy((dst), (src) ,(len), cudaMemcpyHostToDevice); \
+
 #ifndef TH
 #define TH 1024
 #endif
+
 int main(){
   char* key;
   char* salt;
