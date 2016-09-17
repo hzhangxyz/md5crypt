@@ -201,17 +201,16 @@ __global__ void md5crypt(char* key, char* salt, char* buffer, size_t key_len, si
   struct md5_ctx ctx;
   struct md5_ctx alt_ctx;
 
-  md5_init_ctx (&ctx);
-  md5_process_bytes (key, key_len, &ctx);
-  md5_process_bytes (md5_salt_prefix, sizeof (md5_salt_prefix) - 1, &ctx);
-  md5_process_bytes (salt, salt_len, &ctx);
-
   md5_init_ctx (&alt_ctx);
   md5_process_bytes (key, key_len, &alt_ctx);
   md5_process_bytes (salt, salt_len, &alt_ctx);
   md5_process_bytes (key, key_len, &alt_ctx);
   md5_finish_ctx (&alt_ctx, alt_result);
 
+  md5_init_ctx (&ctx);
+  md5_process_bytes (key, key_len, &ctx);
+  md5_process_bytes (md5_salt_prefix, sizeof (md5_salt_prefix) - 1, &ctx);
+  md5_process_bytes (salt, salt_len, &ctx);
 
   for (int cnt = 0; cnt < key_len/16; cnt++)
     md5_process_bytes (alt_result, 16, &ctx);
