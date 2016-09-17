@@ -306,6 +306,7 @@ int main(){
   int n = -1;
   CUDA_malloc_and_memcpy(flag,&n,sizeof(int));
 
+  for(int i = 0 ; i < 32; i ++)
   md5crypt_gate<<<1,1024>>>(salt_dl,key_dl,salt_dp,key_dp,hash,flag);
 
   cudaMemcpy(&n, flag ,sizeof(int), cudaMemcpyDeviceToHost);
