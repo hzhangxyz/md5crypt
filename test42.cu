@@ -288,9 +288,6 @@ int main(){
   CUDA_malloc_and_memcpy(salt_dl,salt_len,3*sizeof(int));
   CUDA_malloc_and_memcpy(key_dl,key_len,3*sizeof(int))
 
-  md5crypt_gate<<<1,3>>>(salt_dl,key_dl,salt_dp,key_dl,hash);
-  char ans[64];
-  cudaMemcpy(ans,buffer,32 * sizeof(char),cudaMemcpyDeviceToHost);
-  printf("%s\n",ans);
+  md5crypt_gate<<<1,3>>>(salt_dl,key_dl,salt_dp,key_dp,hash);
   return 0;
 }
