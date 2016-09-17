@@ -253,10 +253,11 @@ __device__ __forceinline__  void md5crypt(char* key, char* salt, char* buffer, s
   *cp = 0;
 }
 
-__global__ void md5crypt_gate(int *salt_len,int *key_len,char **salt,char **key, char *hash){
+__global__ void md5crypt_gate(int *salt_len,int *key_len,char **salt,char **key, char *hash,int* flag){
   int t = blockDim.x * blockIdx.x + threadIdx.x;
   char buffer[32];
   md5crypt(salt[t],key[t],buffer,salt_len[t],key_len[t]);
+  flag = t;
 }
 
 #define CUDA_malloc_and_memcpy(dst,src,len)                  \
@@ -269,9 +270,7 @@ int main(){
   char* hash;
 
   CUDA_malloc_and_memcpy(hash,"OKuSn268wgnMGHee3mENR.",23 * sizeof(char));
-
   CUDA_malloc_and_memcpy(salt,"8UbX8cck",13 * sizeof(char));
-
   CUDA_malloc_and_memcpy(key,"qwertyuiiuytrewqqazsedcf.",25 * sizeof(char));
 
   char* salt_p[] = {salt,salt,salt};
@@ -288,6 +287,13 @@ int main(){
   CUDA_malloc_and_memcpy(salt_dl,salt_len,3*sizeof(int));
   CUDA_malloc_and_memcpy(key_dl,key_len,3*sizeof(int))
 
-  md5crypt_gate<<<1,3>>>(salt_dl,key_dl,salt_dp,key_dp,hash);
+  int *flag;
+  CUDA_malloc_and_memcpy(flag,-1,sizeof(int));
+
+  md5crypt_gate<<<1,3>>>(salt_dl,key_dl,salt_dp,key_dp,hash,flag);
+  int n;
+  cudaMemcpy(&n, flag ,sizeof(int), cudaMemcpyDeviceToHost);
+  printf("%d\n",n);
+
   return 0;
 }
