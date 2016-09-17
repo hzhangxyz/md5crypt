@@ -275,7 +275,9 @@ __global__ void md5crypt_gate(int *salt_len_a,int *key_len_a,char **salt_a,char 
 #define CUDA_malloc_and_memcpy(dst,src,len)                  \
     cudaMalloc((void**)&(dst),(len));                        \
     cudaMemcpy((dst), (src) ,(len), cudaMemcpyHostToDevice); \
-
+#ifndef TH
+#define TH 1024
+#endif
 int main(){
   char* key;
   char* salt;
@@ -285,11 +287,11 @@ int main(){
   CUDA_malloc_and_memcpy(salt,"8UbX8cck",9 * sizeof(char));
   CUDA_malloc_and_memcpy(key,"qwertyui",9 * sizeof(char));
 
-  char* salt_p[4096];
-  char* key_p[4096];
-  int salt_len[4096];
-  int key_len[4096];
-  for(int i = 0 ; i < 4096 ; i ++){
+  char* salt_p[TH];
+  char* key_p[TH];
+  int salt_len[TH];
+  int key_len[TH];
+  for(int i = 0 ; i < TH ; i ++){
       salt_p[i] = salt;
       key_p[i] = key;
       salt_len[i] = 8;
@@ -300,17 +302,17 @@ int main(){
   int* salt_dl;
   int* key_dl;
 
-  CUDA_malloc_and_memcpy(salt_dp,salt_p,4096*sizeof(char*));
-  CUDA_malloc_and_memcpy(key_dp,key_p,4096*sizeof(char*));
-  CUDA_malloc_and_memcpy(salt_dl,salt_len,4096*sizeof(int));
-  CUDA_malloc_and_memcpy(key_dl,key_len,4096*sizeof(int))
+  CUDA_malloc_and_memcpy(salt_dp,salt_p,TH*sizeof(char*));
+  CUDA_malloc_and_memcpy(key_dp,key_p,TH*sizeof(char*));
+  CUDA_malloc_and_memcpy(salt_dl,salt_len,TH*sizeof(int));
+  CUDA_malloc_and_memcpy(key_dl,key_len,TH*sizeof(int))
 
   int *flag;
   int n = -1;
   CUDA_malloc_and_memcpy(flag,&n,sizeof(int));
 
 //  for(int i = 0 ; i < 1024; i ++)
-  md5crypt_gate<<<1,1024>>>(salt_dl,key_dl,salt_dp,key_dp,hash,flag);
+  md5crypt_gate<<<1,TH>>>(salt_dl,key_dl,salt_dp,key_dp,hash,flag);
 
   cudaMemcpy(&n, flag ,sizeof(int), cudaMemcpyDeviceToHost);
 
