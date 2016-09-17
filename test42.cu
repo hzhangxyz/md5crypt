@@ -219,7 +219,9 @@ __global__ void md5crypt(char* key, char* salt, char* buffer, size_t key_len, si
   md5_finish_ctx (&ctx, alt_result);
 
   for (int cnt = 0; cnt < 1000; ++cnt){
-    if(ctx->buflen == 128) break;
+
+    if(ctx.buflen == 128) break;
+
     md5_init_ctx (&ctx);
 
     if ((cnt & 1) != 0)
