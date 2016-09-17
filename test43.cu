@@ -284,11 +284,12 @@ __global__ void md5crypt_gate(int *salt_len_a,int *key_len_a,char **salt_a,char 
 #define TH 1024
 #endif
 
-int main(){
-  __constant__ char key="qwertyui";
-  __constant__ char salt="8UbX8cck";
-  __constant__ char hash="OKuSn268wgnMGHee3mENR.";
+__constant__ char key[]="qwertyui";
+__constant__ char salt[]="8UbX8cck";
+__constant__ char hash[]="OKuSn268wgnMGHee3mENR.";
 
+ 
+int main(){
   char* salt_p[BL*TH];
   char* key_p[BL*TH];
   int salt_len[BL*TH];
