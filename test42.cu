@@ -278,12 +278,15 @@ int main(){
   char* key_p[] = {key,key+8,key+16};
   int salt_len[] = {8,8,8};
   int key_len[] = {8,8,8};
-  char** salt_dp;char** key_dp;int* salt_dl,int* key_dl;
+  char** salt_dp;
+  char** key_dp;
+  int* salt_dl;
+  int* key_dl;
 
   CUDA_malloc_and_memcpy(salt_dp,salt_p,3*sizeof(char*));
   CUDA_malloc_and_memcpy(key_dp,key_p,3*sizeof(char*));
   CUDA_malloc_and_memcpy(salt_dl,salt_len,3*sizeof(int));
-  CUDA_malloc_and_memcpy(key_dl,key_len,3*sizeof(it))
+  CUDA_malloc_and_memcpy(key_dl,key_len,3*sizeof(int))
 
   md5crypt_gate<<<1,3>>>(salt_dl,key_dl,salt_dp,key_dl,hash);
   char ans[64];
