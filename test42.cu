@@ -193,7 +193,7 @@ __device__ __forceinline__ void md5_finish_ctx (struct md5_ctx *ctx, void *resbu
   md5_read_ctx (ctx, resbuf);
 }
 
-__global__ void get_it(char* key, char* salt, char* buffer, size_t key_len, size_t salt_len){
+__global__ void md5crypt(char* key, char* salt, char* buffer, size_t key_len, size_t salt_len){
 
   unsigned char alt_result[16];
   char *cp;
@@ -276,7 +276,7 @@ int main(){
   cudaMemcpy(key,"qwertyui",9 * sizeof(char), cudaMemcpyHostToDevice);
   cudaMemcpy(salt,"8UbX8cck",13 * sizeof(char), cudaMemcpyHostToDevice);
   cudaMalloc((void**)&buffer,64 * sizeof(char));
-  get_it<<<1,1>>>(key,salt,buffer,8,8);
+  md5crypt<<<1,1>>>(key,salt,buffer,8,8);
   char ans[64];
   cudaMemcpy(ans,buffer,64 * sizeof(char),cudaMemcpyDeviceToHost);
   printf("%s\n",ans);
