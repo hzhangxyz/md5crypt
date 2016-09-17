@@ -156,7 +156,7 @@ __device__ __forceinline__ void md5_process_bytes (const void *buffer, size_t le
 
 }
 
-__device__ void md5_finish_ctx (struct md5_ctx *ctx, void *resbuf){
+__device__ __forceinline__ void md5_finish_ctx (struct md5_ctx *ctx, void *resbuf){
   unsigned int bytes = ctx->buflen;
   size_t pad;
 
