@@ -304,10 +304,7 @@ int main(){
 
   cudaMemcpy(&n, flag ,sizeof(int), cudaMemcpyDeviceToHost);
 
-  char ans[32];
-
-  cudaMemcpy(ans,hash, 23*sizeof(char),cudaMemcpyDeviceToHost);
-  printf("%d\n%s\n",n,ans);
+  printf("%d\n\n",n);
 
   return 0;
 }
