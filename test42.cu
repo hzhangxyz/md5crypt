@@ -196,7 +196,6 @@ __device__ __forceinline__ void md5_finish_ctx (struct md5_ctx *ctx, void *resbu
 __global__ void get_it(char* key, char* salt, char* buffer, size_t key_len, size_t salt_len){
 
   unsigned char alt_result[16];
-  size_t cnt;
   char *cp;
 
   struct md5_ctx ctx;
@@ -214,19 +213,18 @@ __global__ void get_it(char* key, char* salt, char* buffer, size_t key_len, size
   md5_finish_ctx (&alt_ctx, alt_result);
 
 
-//  for (cnt = key_len; cnt > 16; cnt -= 16)
-  for (cnt = 0; cnt < key_len/16; cnt++)
+  for (int cnt = 0; cnt < key_len/16; cnt++)
     md5_process_bytes (alt_result, 16, &ctx);
   md5_process_bytes (alt_result, key_len%16, &ctx);
 
   *alt_result = 0;
 
-  for (cnt = key_len; cnt > 0; cnt >>= 1)
+  for (int cnt = key_len; cnt > 0; cnt >>= 1)
     md5_process_bytes ((cnt & 1) != 0 ? (const void *) alt_result : (const void *) key, 1, &ctx);
 
   md5_finish_ctx (&ctx, alt_result);
 
-  for (cnt = 0; cnt < 1000; ++cnt){
+  for (int cnt = 0; cnt < 1000; ++cnt){
     md5_init_ctx (&ctx);
 
     if ((cnt & 1) != 0)
@@ -253,7 +251,7 @@ __global__ void get_it(char* key, char* salt, char* buffer, size_t key_len, size
 #define b64_from_24bit(b2,b1,b0,N)                  \
   {                                                 \
     unsigned int w = (b2 << 16) | (b1 << 8) | b0;   \
-    for(int i=0;i<N;i++){                           \
+    for(int cnt=0;cnt<(N);cnt++){                   \
       *cp++ = b64t[w & 0x3f];                       \
       w >>= 6;                                      \
     }                                               \
