@@ -202,15 +202,11 @@ __device__ __forceinline__ void md5_finish_ctx (struct md5_ctx *ctx, void *resbu
   md5_read_ctx (ctx, resbuf);
 }
 
-__global__ void get_it(char* key, char* salt, char* buffer){
+__global__ void get_it(char* key, char* salt, char* buffer, size_t key_len, size_t salt_len){
 
   unsigned char alt_result[16];
-  size_t salt_len;
-  size_t key_len;
   size_t cnt;
   char *cp;
-
-  salt += sizeof (md5_salt_prefix) - 1;
 
   salt_len = 8;
   cp = key;
@@ -264,11 +260,7 @@ __global__ void get_it(char* key, char* salt, char* buffer){
     md5_finish_ctx (&ctx, alt_result);
   }
 
-  memcpy (buffer, md5_salt_prefix,sizeof(md5_salt_prefix));
-  cp = buffer + sizeof (md5_salt_prefix) - 1;
-
-  memcpy (cp, salt, salt_len);
-  cp += salt_len;
+  cp = buffer;
 
   *cp++ = '$';
 
@@ -299,9 +291,9 @@ int main(){
   cudaMalloc((void**)&salt, 32 * sizeof(char));
   cudaMalloc((void**)&key, 32 * sizeof(char));
   cudaMemcpy(key,"qwertyui",9 * sizeof(char), cudaMemcpyHostToDevice);
-  cudaMemcpy(salt,"$1$8UbX8cck$",13 * sizeof(char), cudaMemcpyHostToDevice);
+  cudaMemcpy(salt,"8UbX8cck",13 * sizeof(char), cudaMemcpyHostToDevice);
   cudaMalloc((void**)&buffer,64 * sizeof(char));
-  get_it<<<1,1>>>(key,salt,buffer);
+  get_it<<<1,1>>>(key,salt,buffer,8,8);
   char ans[64];
   cudaMemcpy(ans,buffer,64 * sizeof(char),cudaMemcpyDeviceToHost);
   printf("%s\n",ans);
