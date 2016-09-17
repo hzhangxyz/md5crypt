@@ -263,16 +263,12 @@ __global__ void md5crypt_gate(int *salt_len_a,int *key_len_a,char **salt_a,char 
   for(int i = 0; i < key_len_a[t];i++)
       l_key[i] = key_a[t][i];
   md5crypt(l_salt,l_key,buffer,salt_len_a[t],key_len_a[t]);
-  if(t==2){
-      for(int i = 0; i < 22;i++)
-          hash[i]=buffer[i];
-  }
-/*  int f = 1;
+  int f = 1;
   for(int i = 0;i<22;i++)
     if(buffer[i]!=hash[i])
         f = 0;
   if(f)
-    *flag = t;*/
+    *flag = t;
 }
 
 #define CUDA_malloc_and_memcpy(dst,src,len)                  \
