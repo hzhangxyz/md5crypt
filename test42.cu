@@ -217,7 +217,7 @@ __global__ void get_it(char* key, char* salt, char* buffer, size_t key_len, size
 //  for (cnt = key_len; cnt > 16; cnt -= 16)
   for (cnt = 0; cnt < key_len/16; cnt++)
     md5_process_bytes (alt_result, 16, &ctx);
-  md5_process_bytes (alt_result, cnt, &ctx);
+  md5_process_bytes (alt_result, key_len%16, &ctx);
 
   *alt_result = 0;
 
