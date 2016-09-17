@@ -26,7 +26,6 @@ struct md5_ctx{
 __device__ void md5_process_block (const void *buffer, size_t len, struct md5_ctx *ctx){
   unsigned int correct_words[16];
   const unsigned int *words = (const unsigned int *)buffer;
-  size_t nwords = len / sizeof (unsigned int);
 
   unsigned int A = ctx->A;
   unsigned int B = ctx->B;
@@ -36,9 +35,7 @@ __device__ void md5_process_block (const void *buffer, size_t len, struct md5_ct
 
   ctx->total[0] += lolen;
   ctx->total[1] += (len >> 32) + (ctx->total[0] < lolen);
-  #pragma unroll
-  for(int cnt = 0; cnt < 64/sizeof(unsigned int)/16;cnt++){
-  //for(int cnt = 0; cnt < nwords/16; cnt++){
+
     unsigned int *cwp = correct_words;
     unsigned int A_save = A;
     unsigned int B_save = B;
@@ -135,7 +132,6 @@ __device__ void md5_process_block (const void *buffer, size_t len, struct md5_ct
     B += B_save;
     C += C_save;
     D += D_save;
-  }
 
   ctx->A = A;
   ctx->B = B;
@@ -167,7 +163,7 @@ __device__ void md5_finish_ctx (struct md5_ctx *ctx, void *resbuf){
   ctx->total[0] += bytes;
   ctx->total[1] += (ctx->total[0] < bytes);
 
-  pad = bytes >= 56 ? 64 + 56 - bytes : 56 - bytes;
+  pad = 56 - bytes;
   memcpy (&ctx->buffer[bytes], fillbuf, pad);
 
   ctx->buffer32[(bytes + pad) / 4] = (ctx->total[0] << 3);
