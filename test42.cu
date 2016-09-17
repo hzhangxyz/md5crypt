@@ -1,8 +1,5 @@
 #include <stdio.h>//printf
 
-#define MIN(a,b) (((a)<(b))?(a):(b))
-#define MAX(a,b) (((a)>(b))?(a):(b))
-
 static __constant__ const char md5_salt_prefix[] = "$1$";
 static __constant__ const char b64t[] = "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 static __constant__ const unsigned char fillbuf[64] = { 0x80, 0 };
@@ -156,12 +153,12 @@ __device__ __forceinline__ void md5_init_ctx (struct md5_ctx *ctx){
 
 __device__ __forceinline__ void md5_process_bytes (const void *buffer, size_t len, struct md5_ctx *ctx){
   size_t left_over = ctx->buflen;
-  size_t add = MIN(len, 128 - left_over);
+  size_t add = len < 128 - left_over ? len : 128 - left_over;
 
   memcpy (&ctx->buffer[left_over], buffer, add);
   ctx->buflen += add;
 
-  buffer = (const char *) buffer + add;
+//  buffer = (const char *) buffer + add;
   len -= add;
 
   ctx->buflen += len;
