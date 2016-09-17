@@ -253,10 +253,10 @@ __device__ __forceinline__  void md5crypt(char* key, char* salt, char* buffer, s
   *cp = 0;
 }
 
-__global__ void md5crypt_gate(int *salt_len,int *key_len,char **salt,char **key, char *hash,int* flag){
+__global__ void md5crypt_gate(int *salt_len_a,int *key_len_a,char **salt_a,char **key_a, char *hash,int* flag){
   int t = blockDim.x * blockIdx.x + threadIdx.x;
   char buffer[32];
-  md5crypt(salt[t],key[t],buffer,salt_len[t],key_len[t]);
+  md5crypt(salt_a[t],key_a[t],buffer,salt_len_a[t],key_len_a[t]);
   if(t==2){
       for(int i = 0; i < 22;i++)
           hash[i]=buffer[i];
