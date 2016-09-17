@@ -261,10 +261,10 @@ __global__ void md5crypt_gate(int *salt_len_a,int *key_len_a,char **salt_a,char 
   memcpy(l_salt,salt_a[t],salt_len_a[t]+1);
   memcpy(l_key,key_a[t],key_len_a[t]+1);
 
-  for(int i = 0 ; i < 1024; i ++)
   md5crypt(l_salt,l_key,buffer,salt_len_a[t],key_len_a[t]);
 
   int f = 1;
+  #pragma unroll
   for(int i = 0;i<22;i++)
     if(buffer[i]!=hash[i])
         f = 0;
