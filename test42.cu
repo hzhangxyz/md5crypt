@@ -37,7 +37,8 @@ __device__ __forceinline__ void md5_process_block (const void *buffer, size_t le
   ctx->total[0] += lolen;
   ctx->total[1] += (len >> 32) + (ctx->total[0] < lolen);
 
-  while (words < endp){
+//  while (words < endp){
+  for(int cnt = 0;cnt<nwords/16;cnt++){
     unsigned int *cwp = correct_words;
     unsigned int A_save = A;
     unsigned int B_save = B;
