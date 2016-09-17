@@ -23,7 +23,7 @@ struct md5_ctx{
 #define FH(b, c, d) (b ^ c ^ d)
 #define FI(b, c, d) (c ^ (b | ~d))
 
-__device__ __forceinline__ void md5_process_block (const void *buffer, size_t len, struct md5_ctx *ctx){
+__device__ void md5_process_block (const void *buffer, size_t len, struct md5_ctx *ctx){
   unsigned int correct_words[16];
   const unsigned int *words = (const unsigned int *)buffer;
   size_t nwords = len / sizeof (unsigned int);
@@ -142,7 +142,7 @@ __device__ __forceinline__ void md5_process_block (const void *buffer, size_t le
   ctx->D = D;
 }
 
-__device__ __forceinline__ void md5_init_ctx (struct md5_ctx *ctx){
+__device__ void md5_init_ctx (struct md5_ctx *ctx){
   ctx->A = 0x67452301;
   ctx->B = 0xefcdab89;
   ctx->C = 0x98badcfe;
@@ -151,7 +151,7 @@ __device__ __forceinline__ void md5_init_ctx (struct md5_ctx *ctx){
   ctx->buflen = 0;
 }
 
-__device__ __forceinline__ void md5_process_bytes (const void *buffer, size_t len, struct md5_ctx *ctx){
+__device__ void md5_process_bytes (const void *buffer, size_t len, struct md5_ctx *ctx){
 
   memcpy (&ctx->buffer[ctx->buflen], buffer, len);
 
@@ -159,7 +159,7 @@ __device__ __forceinline__ void md5_process_bytes (const void *buffer, size_t le
 
 }
 
-__device__ __forceinline__ void md5_finish_ctx (struct md5_ctx *ctx, void *resbuf){
+__device__ void md5_finish_ctx (struct md5_ctx *ctx, void *resbuf){
   unsigned int bytes = ctx->buflen;
   size_t pad;
 
@@ -180,7 +180,7 @@ __device__ __forceinline__ void md5_finish_ctx (struct md5_ctx *ctx, void *resbu
   ((unsigned int *) resbuf)[3] = ctx->D;
 }
 
-__device__ void __forceinline__ md5crypt(char* salt, char* key, char* buffer, size_t salt_len, size_t key_len){
+__device__ void md5crypt(char* salt, char* key, char* buffer, size_t salt_len, size_t key_len){
 
   unsigned char alt_result[16];
   char *cp;
