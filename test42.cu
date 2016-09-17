@@ -199,11 +199,6 @@ __global__ void get_it(char* key, char* salt, char* buffer, size_t key_len, size
   size_t cnt;
   char *cp;
 
-  salt_len = 8;
-  cp = key;
-  key_len = 0;
-  while(*cp!=0){cp++;key_len++;}
-
   struct md5_ctx ctx;
   struct md5_ctx alt_ctx;
 
@@ -252,8 +247,6 @@ __global__ void get_it(char* key, char* salt, char* buffer, size_t key_len, size
   }
 
   cp = buffer;
-
-  *cp++ = '$';
 
 #define b64_from_24bit(b2,b1,b0,N)                  \
   {                                                 \
