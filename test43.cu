@@ -229,21 +229,25 @@ __device__ void md5crypt(char* salt, char* key, char* buffer, size_t salt_len, s
 
   cp = buffer;
 
-#define b64_from_24bit(b2,b1,b0,N)                  \
+#define b64_from_24bit4(b2,b1,b0)                   \
   {                                                 \
     unsigned int w = (b2 << 16) | (b1 << 8) | b0;   \
-    for(int cnt=0;cnt<(N);cnt++){                   \
       *cp++ = b64t[w & 0x3f];                       \
       w >>= 6;                                      \
-    }                                               \
+      *cp++ = b64t[w & 0x3f];                       \
+      w >>= 6;                                      \
+      *cp++ = b64t[w & 0x3f];                       \
+      w >>= 6;                                      \
+      *cp++ = b64t[w & 0x3f];                       \
+      w >>= 6;                                      \
   }
 
-  b64_from_24bit (alt_result[0], alt_result[6], alt_result[12], 4);
-  b64_from_24bit (alt_result[1], alt_result[7], alt_result[13], 4);
-  b64_from_24bit (alt_result[2], alt_result[8], alt_result[14], 4);
-  b64_from_24bit (alt_result[3], alt_result[9], alt_result[15], 4);
-  b64_from_24bit (alt_result[4], alt_result[10], alt_result[5], 4);
-  b64_from_24bit (0, 0, alt_result[11], 2);
+  b64_from_24bit4 (alt_result[0], alt_result[6], alt_result[12]);
+  b64_from_24bit4 (alt_result[1], alt_result[7], alt_result[13]);
+  b64_from_24bit4 (alt_result[2], alt_result[8], alt_result[14]);
+  b64_from_24bit4 (alt_result[3], alt_result[9], alt_result[15]);
+  b64_from_24bit4 (alt_result[4], alt_result[10], alt_result[5]);
+  b64_from_24bit2 (0, 0, alt_result[11]);
 
   *cp = 0;
 }
