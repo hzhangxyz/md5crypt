@@ -152,14 +152,14 @@ __device__ __forceinline__ void md5_init_ctx (struct md5_ctx *ctx){
 }
 
 __device__ __forceinline__ void md5_process_bytes (const void *buffer, size_t len, struct md5_ctx *ctx){
-  size_t left_over = ctx->buflen;
-  size_t add = len < 128 - left_over ? len : 128 - left_over;
+//  size_t left_over = ctx->buflen;
+  //size_t add = len < 128 - left_over ? len : 128 - left_over;
 
-  memcpy (&ctx->buffer[left_over], buffer, add);
-  ctx->buflen += add;
+  memcpy (&ctx->buffer[left_over], buffer, len);
+//  ctx->buflen += add;
 
 //  buffer = (const char *) buffer + add;
-  len -= add;
+//  len -= add;
 
   ctx->buflen += len;
 
