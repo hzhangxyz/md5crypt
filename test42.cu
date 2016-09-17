@@ -297,10 +297,10 @@ int main(){
   int* salt_dl;
   int* key_dl;
 
-  CUDA_malloc_and_memcpy(salt_dp,salt_p,3*sizeof(char*));
-  CUDA_malloc_and_memcpy(key_dp,key_p,3*sizeof(char*));
-  CUDA_malloc_and_memcpy(salt_dl,salt_len,3*sizeof(int));
-  CUDA_malloc_and_memcpy(key_dl,key_len,3*sizeof(int))
+  CUDA_malloc_and_memcpy(salt_dp,salt_p,4096*sizeof(char*));
+  CUDA_malloc_and_memcpy(key_dp,key_p,4096*sizeof(char*));
+  CUDA_malloc_and_memcpy(salt_dl,salt_len,4096*sizeof(int));
+  CUDA_malloc_and_memcpy(key_dl,key_len,4096*sizeof(int))
 
   int *flag;
   int n = -1;
