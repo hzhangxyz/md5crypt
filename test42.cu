@@ -257,7 +257,7 @@ __global__ void md5crypt_gate(int *salt_len,int *key_len,char **salt,char **key,
   int t = blockDim.x * blockIdx.x + threadIdx.x;
   char buffer[32];
   md5crypt(salt[t],key[t],buffer,salt_len[t],key_len[t]);
-  flag = t;
+  *flag = t;
 }
 
 #define CUDA_malloc_and_memcpy(dst,src,len)                  \
@@ -288,10 +288,10 @@ int main(){
   CUDA_malloc_and_memcpy(key_dl,key_len,3*sizeof(int))
 
   int *flag;
-  CUDA_malloc_and_memcpy(flag,-1,sizeof(int));
+  int n = -1;
+  CUDA_malloc_and_memcpy(flag,&n,sizeof(int));
 
   md5crypt_gate<<<1,3>>>(salt_dl,key_dl,salt_dp,key_dp,hash,flag);
-  int n;
   cudaMemcpy(&n, flag ,sizeof(int), cudaMemcpyDeviceToHost);
   printf("%d\n",n);
 
