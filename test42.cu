@@ -155,6 +155,7 @@ __device__ __forceinline__ void md5_init_ctx (struct md5_ctx *ctx){
 }
 
 __device__ __forceinline__ void md5_process_bytes (const void *buffer, size_t len, struct md5_ctx *ctx){
+  if(ctx->buflen == 128) return;
   size_t left_over = ctx->buflen;
   size_t add = MIN(len, 128 - left_over);
 
