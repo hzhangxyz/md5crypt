@@ -180,7 +180,7 @@ __device__ __forceinline__ void md5_finish_ctx (struct md5_ctx *ctx, void *resbu
   ((unsigned int *) resbuf)[3] = ctx->D;
 }
 
-__device__ void md5crypt(char* salt, char* key, char* buffer, size_t salt_len, size_t key_len){
+__device__ void __forceinline__ md5crypt(char* salt, char* key, char* buffer, size_t salt_len, size_t key_len){
 
   unsigned char alt_result[16];
   char *cp;
