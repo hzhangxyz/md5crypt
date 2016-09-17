@@ -242,6 +242,17 @@ __device__ void md5crypt(char* salt, char* key, char* buffer, size_t salt_len, s
       w >>= 6;                                      \
   }
 
+#define b64_from_24bit2(b2,b1,b0)                   \
+  {                                                 \
+    unsigned int w = (b2 << 16) | (b1 << 8) | b0;   \
+      *cp++ = b64t[w & 0x3f];                       \
+      w >>= 6;                                      \
+      *cp++ = b64t[w & 0x3f];                       \
+      w >>= 6;                                      \
+  }
+
+ 
+
   b64_from_24bit4 (alt_result[0], alt_result[6], alt_result[12]);
   b64_from_24bit4 (alt_result[1], alt_result[7], alt_result[13]);
   b64_from_24bit4 (alt_result[2], alt_result[8], alt_result[14]);
