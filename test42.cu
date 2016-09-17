@@ -253,21 +253,41 @@ __device__ __forceinline__  void md5crypt(char* key, char* salt, char* buffer, s
   *cp = 0;
 }
 
-__global__ void md5crypt_gate(){
+__global__ void md5crypt_gate(int *salt_len,int *key_len,char **salt,char **key, char *hash){
+  int t = blockDim.x * blockIdx.x + threadIdx.x;
+  char buffer[32];
+  md5crypt(salt[t],key[t],buffer,salt_len[t],key_len[t]);
 }
+
+#define CUDA_malloc_and_memcpy(dst,src,len)                  \
+    cudaMalloc((void**)&(dst),(len));                        \
+    cudaMemcpy((dst), (src) ,(len), cudaMemcpyHostToDevice); \
 
 int main(){
   char* key;
   char* salt;
-  char* buffer;
-  cudaMalloc((void**)&salt, 32 * sizeof(char));
-  cudaMalloc((void**)&key, 32 * sizeof(char));
-  cudaMemcpy(key,"qwertyui",9 * sizeof(char), cudaMemcpyHostToDevice);
-  cudaMemcpy(salt,"8UbX8cck",13 * sizeof(char), cudaMemcpyHostToDevice);
-  cudaMalloc((void**)&buffer,64 * sizeof(char));
-  md5crypt_gate<<<1,1>>>();
+  char* hash;
+
+  CUDA_malloc_and_memcpy(hash,"OKuSn268wgnMGHee3mENR.",23 * sizeof(char));
+
+  CUDA_malloc_and_memcpy(salt,"8UbX8cck",13 * sizeof(char));
+
+  CUDA_malloc_and_memcpy(key,"qwertyuiiuytrewqqazsedcf.",25 * sizeof(char));
+
+  char* salt_p[] = {salt,salt,salt};
+  char* key_p[] = {key,key+8,key+16};
+  int salt_len[] = {8,8,8};
+  int key_len[] = {8,8,8};
+  char** salt_dp;char** key_dp;int* salt_dl,int* key_dl;
+
+  CUDA_malloc_and_memcpy(salt_dp,salt_p,3*sizeof(char*));
+  CUDA_malloc_and_memcpy(key_dp,key_p,3*sizeof(char*));
+  CUDA_malloc_and_memcpy(salt_dl,salt_len,3*sizeof(int));
+  CUDA_malloc_and_memcpy(key_dl,key_len,3*sizeof(it))
+
+  md5crypt_gate<<<1,3>>>(salt_dl,key_dl,salt_dp,key_dl,hash);
   char ans[64];
-  cudaMemcpy(ans,buffer,64 * sizeof(char),cudaMemcpyDeviceToHost);
+  cudaMemcpy(ans,buffer,32 * sizeof(char),cudaMemcpyDeviceToHost);
   printf("%s\n",ans);
   return 0;
 }
