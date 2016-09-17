@@ -253,7 +253,8 @@ __device__ __forceinline__  void md5crypt(char* key, char* salt, char* buffer, s
   *cp = 0;
 }
 
-__global__ void md5crypt_gate()
+__global__ void md5crypt_gate(){
+}
 
 int main(){
   char* key;
@@ -264,7 +265,7 @@ int main(){
   cudaMemcpy(key,"qwertyui",9 * sizeof(char), cudaMemcpyHostToDevice);
   cudaMemcpy(salt,"8UbX8cck",13 * sizeof(char), cudaMemcpyHostToDevice);
   cudaMalloc((void**)&buffer,64 * sizeof(char));
-  md5crypt<<<1,1>>>(key,salt,buffer,8,8);
+  md5crypt_gate<<<1,1>>>();
   char ans[64];
   cudaMemcpy(ans,buffer,64 * sizeof(char),cudaMemcpyDeviceToHost);
   printf("%s\n",ans);
