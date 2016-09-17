@@ -195,9 +195,7 @@ __device__ void md5crypt(char* salt, char* key, char* buffer, size_t salt_len, s
   md5_process_bytes (md5_salt_prefix, sizeof (md5_salt_prefix) - 1, &ctx);
   md5_process_bytes (salt, salt_len, &ctx);
 
-  for (int cnt = 0; cnt < 8/16; cnt++)
-    md5_process_bytes (alt_result, 16, &ctx);
-  md5_process_bytes (alt_result, 8%16, &ctx);
+  md5_process_bytes (alt_result, key_len, &ctx);
 
   *alt_result = 0;  
   #pragma unroll
