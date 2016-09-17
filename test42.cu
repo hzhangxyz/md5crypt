@@ -280,7 +280,7 @@ int main(){
 
   CUDA_malloc_and_memcpy(hash,"OKuSn268wgnMGHee3mENR.",23 * sizeof(char));
   CUDA_malloc_and_memcpy(salt,"8UbX8cck",13 * sizeof(char));
-  CUDA_malloc_and_memcpy(key,"qwertyuiiuytrewqqazsedcf.",25 * sizeof(char));
+  CUDA_malloc_and_memcpy(key,"iuytrewqqazsedcfqwertyui",25 * sizeof(char));
 
   char* salt_p[] = {salt,salt,salt};
   char* key_p[] = {key,key+8,key+16};
