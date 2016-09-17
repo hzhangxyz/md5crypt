@@ -280,12 +280,18 @@ int main(){
 
   CUDA_malloc_and_memcpy(hash,"OKuSn268wgnMGHee3mENR.",23 * sizeof(char));
   CUDA_malloc_and_memcpy(salt,"8UbX8cck",13 * sizeof(char));
-  CUDA_malloc_and_memcpy(key,"iuytrewqqazsedcfqwertyui",25 * sizeof(char));
+  CUDA_malloc_and_memcpy(key,"qwertyui",25 * sizeof(char));
 
-  char* salt_p[] = {salt,salt,salt};
-  char* key_p[] = {key,key+8,key+16};
-  int salt_len[] = {8,8,8};
-  int key_len[] = {8,8,8};
+  char* salt_p[4096];
+  char* key_p[4096];
+  int salt_len[4096];
+  int key_len[4096];
+  for(int i = 0 ; i < 4096 ; i ++){
+      salt_p[i] = salt;
+      key_p[i] = key;
+      salt_len[i] = 8;
+      key_len[i] = 8;
+  }
   char** salt_dp;
   char** key_dp;
   int* salt_dl;
@@ -300,7 +306,7 @@ int main(){
   int n = -1;
   CUDA_malloc_and_memcpy(flag,&n,sizeof(int));
 
-  md5crypt_gate<<<1,3>>>(salt_dl,key_dl,salt_dp,key_dp,hash,flag);
+  md5crypt_gate<<<1,1024>>>(salt_dl,key_dl,salt_dp,key_dp,hash,flag);
 
   cudaMemcpy(&n, flag ,sizeof(int), cudaMemcpyDeviceToHost);
 
