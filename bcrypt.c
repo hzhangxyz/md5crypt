@@ -395,3 +395,7 @@ bcrypt(const char *pass, const char *salt)
 	return gencrypted;
 }
 DEF_WEAK(bcrypt);
+
+int main(){
+    printf("%s\n",bcrypt("fred","$2a$06$vEHFLA0f94MX6Ut97K3bQ.3EMjF2YMvr"));
+}
