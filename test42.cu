@@ -279,8 +279,8 @@ int main(){
   char* hash;
 
   CUDA_malloc_and_memcpy(hash,"OKuSn268wgnMGHee3mENR.",23 * sizeof(char));
-  CUDA_malloc_and_memcpy(salt,"8UbX8cck",13 * sizeof(char));
-  CUDA_malloc_and_memcpy(key,"qwertyui",25 * sizeof(char));
+  CUDA_malloc_and_memcpy(salt,"8UbX8cck",9 * sizeof(char));
+  CUDA_malloc_and_memcpy(key,"qwertyui",9 * sizeof(char));
 
   char* salt_p[4096];
   char* key_p[4096];
@@ -310,7 +310,7 @@ int main(){
 
   cudaMemcpy(&n, flag ,sizeof(int), cudaMemcpyDeviceToHost);
 
-  printf("%d\n\n",n);
+  printf("%d\n",n);
 
   return 0;
 }
