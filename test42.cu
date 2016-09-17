@@ -1,4 +1,4 @@
-#include <stdio.h>//printf
+#include <stdio.h>
 
 static __constant__ const char md5_salt_prefix[] = "$1$";
 static __constant__ const char b64t[] = "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
@@ -180,7 +180,7 @@ __device__ __forceinline__ void md5_finish_ctx (struct md5_ctx *ctx, void *resbu
   ((unsigned int *) resbuf)[3] = ctx->D;
 }
 
-__global__ void md5crypt(char* key, char* salt, char* buffer, size_t key_len, size_t salt_len){
+__device__ __forceinline__  void md5crypt(char* key, char* salt, char* buffer, size_t key_len, size_t salt_len){
 
   unsigned char alt_result[16];
   char *cp;
@@ -252,6 +252,8 @@ __global__ void md5crypt(char* key, char* salt, char* buffer, size_t key_len, si
 
   *cp = 0;
 }
+
+__global__ void md5crypt_gate()
 
 int main(){
   char* key;
