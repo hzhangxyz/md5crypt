@@ -281,7 +281,7 @@ __global__ void md5crypt_gate(int *salt_len_a,int *key_len_a,char **salt_a,char 
 #endif
 
 #ifndef TH
-#define TH 1024
+#define TH 2048
 #endif
 
 #ifndef N
@@ -336,8 +336,10 @@ int main(){
   CUDA_malloc_and_memcpy(flag,&n,sizeof(int),s0);
   CUDA_malloc_and_memcpy(flag,&n,sizeof(int),s1);
 
+for(int i = 0; i < N ; i ++){
   md5crypt_gate<<<BL,TH,0,s0>>>(salt_dl,key_dl,salt_dp,key_dp,hash,flag);
   md5crypt_gate<<<BL,TH,0,s1>>>(salt_dl,key_dl,salt_dp,key_dp,hash,flag);
+}
 
   cudaStreamSynchronize(s0);
   cudaStreamSynchronize(s1);
