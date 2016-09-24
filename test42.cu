@@ -272,9 +272,9 @@ __global__ void md5crypt_gate(int *salt_len_a,int *key_len_a,char **salt_a,char 
     *flag = t;
 }
 
-#define CUDA_malloc_and_memcpy(dst,src,len)                  \
-    cudaMalloc((void**)&(dst),(len));                        \
-    cudaMemcpy((dst), (src) ,(len), cudaMemcpyHostToDevice); \
+#define CUDA_malloc_and_memcpy(dst,src,len,str)                       \
+    cudaMalloc((void**)&(dst),(len));                                 \
+    cudaMemcpyAsync((dst), (src) ,(len), cudaMemcpyHostToDevice,str); \
 
 #ifndef BL
 #define BL 256
@@ -293,9 +293,18 @@ int main(){
   char* salt;
   char* hash;
 
-  CUDA_malloc_and_memcpy(hash,"OKuSn268wgnMGHee3mENR.",23 * sizeof(char));
-  CUDA_malloc_and_memcpy(salt,"8UbX8cck",9 * sizeof(char));
-  CUDA_malloc_and_memcpy(key,"qwertyui",9 * sizeof(char));
+  cudaStream_t s0;
+  cudaStream_t s1;
+  cudaStreamCreate(&s0);
+  cudaStreamCreate(&s1);
+
+  CUDA_malloc_and_memcpy(hash,"OKuSn268wgnMGHee3mENR.",23 * sizeof(char),s0);
+  CUDA_malloc_and_memcpy(salt,"8UbX8cck",9 * sizeof(char),s0);
+  CUDA_malloc_and_memcpy(key,"qwertyui",9 * sizeof(char),s0);
+
+  CUDA_malloc_and_memcpy(hash,"OKuSn268wgnMGHee3mENR.",23 * sizeof(char),s1);
+  CUDA_malloc_and_memcpy(salt,"8UbX8cck",9 * sizeof(char),s1);
+  CUDA_malloc_and_memcpy(key,"qwertyui",9 * sizeof(char),s1);
 
   char* salt_p[BL*TH];
   char* key_p[BL*TH];
@@ -312,18 +321,26 @@ int main(){
   int* salt_dl;
   int* key_dl;
 
-  CUDA_malloc_and_memcpy(salt_dp,salt_p,BL*TH*sizeof(char*));
-  CUDA_malloc_and_memcpy(key_dp,key_p,BL*TH*sizeof(char*));
-  CUDA_malloc_and_memcpy(salt_dl,salt_len,BL*TH*sizeof(int));
-  CUDA_malloc_and_memcpy(key_dl,key_len,BL*TH*sizeof(int))
+  CUDA_malloc_and_memcpy(salt_dp,salt_p,BL*TH*sizeof(char*),s0);
+  CUDA_malloc_and_memcpy(key_dp,key_p,BL*TH*sizeof(char*),s0);
+  CUDA_malloc_and_memcpy(salt_dl,salt_len,BL*TH*sizeof(int),s0);
+  CUDA_malloc_and_memcpy(key_dl,key_len,BL*TH*sizeof(int),s0);
+
+  CUDA_malloc_and_memcpy(salt_dp,salt_p,BL*TH*sizeof(char*),s1);
+  CUDA_malloc_and_memcpy(key_dp,key_p,BL*TH*sizeof(char*),s1);
+  CUDA_malloc_and_memcpy(salt_dl,salt_len,BL*TH*sizeof(int),s1);
+  CUDA_malloc_and_memcpy(key_dl,key_len,BL*TH*sizeof(int),s1);
 
   int *flag;
   int n = -1;
-  CUDA_malloc_and_memcpy(flag,&n,sizeof(int));
+  CUDA_malloc_and_memcpy(flag,&n,sizeof(int),s0);
+  CUDA_malloc_and_memcpy(flag,&n,sizeof(int),s1);
 
-  for(int i = 0 ; i < N; i ++)
+  md5crypt_gate<<<BL,TH,0,s0>>>(salt_dl,key_dl,salt_dp,key_dp,hash,flag);
+  md5crypt_gate<<<BL,TH,0,s1>>>(salt_dl,key_dl,salt_dp,key_dp,hash,flag);
 
-  md5crypt_gate<<<BL,TH>>>(salt_dl,key_dl,salt_dp,key_dp,hash,flag);
+  cudaStreamSynchronize(s0);
+  cudaStreamSynchronize(s1);
 
   cudaMemcpy(&n, flag ,sizeof(int), cudaMemcpyDeviceToHost);
 
