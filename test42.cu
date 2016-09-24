@@ -277,7 +277,7 @@ __global__ void md5crypt_gate(int *salt_len_a,int *key_len_a,char **salt_a,char 
     cudaMemcpyAsync((dst), (src) ,(len), cudaMemcpyHostToDevice,str); \
 
 #ifndef BL
-#define BL 5
+#define BL 4
 #endif
 
 #ifndef TH
