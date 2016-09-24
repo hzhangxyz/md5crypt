@@ -281,7 +281,7 @@ __global__ void md5crypt_gate(int *salt_len_a,int *key_len_a,char **salt_a,char 
 #endif
 
 #ifndef TH
-#define TH 512
+#define TH 1024
 #endif
 
 #ifndef N
