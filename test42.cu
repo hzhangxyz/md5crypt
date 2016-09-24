@@ -284,6 +284,10 @@ __global__ void md5crypt_gate(int *salt_len_a,int *key_len_a,char **salt_a,char 
 #define TH 256
 #endif
 
+#ifndef N
+#define N 8
+#endif
+
 int main(){
   char* key;
   char* salt;
@@ -317,7 +321,7 @@ int main(){
   int n = -1;
   CUDA_malloc_and_memcpy(flag,&n,sizeof(int));
 
-  for(int i = 0 ; i < 8; i ++)
+  for(int i = 0 ; i < N; i ++)
 
   md5crypt_gate<<<BL,TH>>>(salt_dl,key_dl,salt_dp,key_dp,hash,flag);
 
